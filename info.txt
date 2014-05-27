@@ -1,0 +1,127 @@
+Use of wrapper classes in java - Purpose of wrapper class
+•Wrapper classes provides a mechanism to "wrap" primitive values in an object so that the primitives can be included in activities reserved for objects, like being added to Collections, or returned from a method with an object return value.
+•Note that autoboxing feature of Java 5 automatically does the wrapping operations.
+•Wrapper classes provides an many utility functions for primitives, Most of these functions are related to various conversions: converting primitives to and from String objects, and converting primitives and String objects to and from different bases (or radix), such as binary, octal and hexadecimal.
+
+•In Java 5, A new feature added, known variously as: autoboxing, auto-unboxing, boxing, and unboxing.
+•Boxing and unboxing makes using wrapper classes more convenient.
+What is autoboxing in java
+•Autoboxing is the process by which a primitive type is automatically encapsulated (boxed) into its equivalent type wrapper whenever an object of that type is needed.
+•There is no need to explicitly construct an object.
+What is auto unboxing in java
+•Auto unboxing is the process by which the value of a boxed object is automatically extracted (unboxed) from a type wrapper when its value is needed.
+•There is no need to call a method such as intValue( ) or doubleValue( ).
+Examples of autoboxing in java
+•In the old, pre Java 5 days, if you wanted to make a wrapper, unwrap it, use it, and then rewrap it, you might do something like this:
+Integer y = new Integer(567); // make it
+int x = y.intValue(); // unwrap it
+x++; // use it
+y = new Integer(x); // re-wrap it
+System.out.println("y = " + y); // print it
+Now, with new and improved Java 5 you can say
+
+Integer y = new Integer(567); // make it
+y++; // unwrap it, increment it,
+// rewrap it
+System.out.println("y = " + y); // print it
+•The code appears to be using the postincrement operator on an object reference variable But it's simply a convenience.
+•Behind the scenes, the compiler does the unboxing and reassignment for you.
+Remember - wrapper reference variables can be null
+•This means that you have to watch out for code that appears to be doing safe primitive operations, but that could throw a NullPointerException:
+class Boxing2 {
+   static Integer x;
+   public static void main(String [] args) {
+      doStuff(x);
+   }
+   static void doStuff(int z) {
+      int z2 = 5;
+      System.out.println(z2 + z);
+   }
+}
+•This code compiles fine, but the JVM throws a NullPointerException when it attempts to invoke doStuff(x), because x doesn’t refer to an Integer object, so there’s no value to unbox.
+•In the case of method overloading, method with primitive type argument would be given priority instead of wrapper or autoboxed type argument to maintain the backword compatibility.
+Use of autoboxing - Advantages of autoboxing
+•Autoboxing and Auto unboxing greatly streamlines the coding of several algorithms, removing the tedium of manually boxing and unboxing values.
+•It also helps prevent errors, Moreover, it is very important to generics, which operates only on objects.
+•Autoboxing makes working with the Collections Framework much easier.
+•With autoboxing it is no longer necessary to manually construct an object in order to wrap a primitive type.
+•You need only assign that value to a type-wrapper reference, Java automatically constructs the object for you.
+•For example, here is the modern way to construct an Integer object that has the value 100:
+Integer iOb = 100; // autobox an int
+
+
+=================================
+Overview of Garbage Collector
+This tutorial contains the overview of Garbage Collector of Java. It contains the details like - What is Garbage Collector, Its use and responsibilities, Garbage collector related tools and algorithm used by JVM etc..  Related Topics:
+Weak references in java
+Types of garbage collector in JVM
+Phantom references in java 
+ Average rating:  
+Rate this article:  
+reviews 
+What is garbage collector in java
+•Java handles deallocation for you automatically, The technique that accomplishes this is called garbage collection.
+        or
+
+•Objects that are referenced are said to be live. Objects that are no longer referenced are considered dead and are termed garbage. The process of finding and freeing (also known as reclaiming) the space used by these objects is known as garbage collection.
+Use of Garbage collector in java
+•Garbage collector frees you from having to add any memory management logic to your application.
+•The downside to automatic garbage collection is that you can't completely control when it runs and when it doesn't.
+•A garbage collector is responsible for :
+1. allocating memory
+2. ensuring that any referenced objects remain in memory, and
+3. recovering memory used by objects that are no longer reachable from references in executing code.
+Overview of garbage collector
+•Whenever java program executes, it uses memory in several different ways.
+•The heap is that part of memory where Java objects live, and it's the one and only part of memory that is in any way involved in the garbage collection process.
+•All of garbage collection revolves around making sure that the heap has as much free space as possible.
+•When the garbage collector runs, its purpose is to find and delete objects that cannot be reached.
+•Garbage collector looks for those discarded objects and deletes them from memory so that the cycle of using memory and releasing it can continue.
+How garbage collector works in java
+•Garbage collector works like this - When no references to an object exist, that object is assumed to be no longer needed, and the memory occupied by the object can be reclaimed.
+•There is no explicit need to destroy objects as in C++.
+•Garbage collection only occurs sporadically (if at all) during the execution of your program.
+•It will not occur simply because one or more objects exist that are no longer used.
+•Furthermore, different Java run-time implementations will take varying approaches to garbage collection, but for the most part, you should not have to think about it while writing your programs.
+•Garbage collector uses a mark and sweep algorithm, and for any given Java implementation that might be true, but the Java specification doesn't guarantee any particular  implementation, It may uses reference counting algorithm also.
+•Remeber that If our Java program has a reference variable that refers to an object, and that reference variable is available to a live thread, then that object is considered reachable and won't be garbage collected
+When Does the Garbage Collector Run
+•The garbage collector is under the control of the JVM.
+•The JVM decides when to run the garbage collector.
+•From within your Java program you can ask the JVM to run the garbage collector, but there are no guarantees, under any circumstances, that the JVM will comply.
+•Left to its own devices, the JVM will typically run the garbage collector when it senses that memory is running low.
+•Experience indicates that when your Java program makes a request for garbage collection, the JVM will usually grant your request in short order, but there are no guarantees.
+Forcing Garbage Collection
+•Remember that Garbage collection cannot be forced.
+•However, Java provides some methods that allow you to request that the JVM perform garbage collection.
+•The garbage collector has evolved to such an advanced state that it’s recommended that you never invoke System.gc() in your code - leave it to the JVM.
+Garbage collector related APIs in Java
+•System.gc( ) - Requests JVM to initiate garbage collection.
+•Runtime.getRuntime( ).gc( )  - Requests JVM to initiate garbage collection.
+•Runtime.getRuntime( ).runFinalization( ) - Initiates calls to the finalize( ) methods of unused but not yet recycled objects.
+•Runtime.getRuntime( ).freeMemory( ) - Returns the approximate number of bytes of free memory available to the Java run-time system.
+•Runtime.getRuntime( ).totalMemory( ) - Returns the total number of bytes of memory available to the program.
+Garbage collector related tools in JDK
+jmap
+•jmap is a command line utility included in the Solaris Operating Environment and Linux (but not Windows) releases of the Java Development Kit (JDK).
+•It prints memory–related statistics for a running JVM or core file. If it is used without any command line options, then it prints the list of shared objects loaded, similar to what the Solaris pmap utility outputs.
+jstat
+•The jstat utility uses the built–in instrumentation in the HotSpot JVM to provide information on performance and resource consumption of running applications.
+•The tool can be used when diagnosing performance issues, and in particular issues related to heap sizing and garbage collection.
+HPROF - Heap Profiler
+•HPROF is a simple profiler agent shipped with JDK 5.0. It is a dynamically–linked library that interfaces to the JVM using the Java Virtual Machine Tools Interface (JVMTI).
+•It writes out profiling information either to a file or to a socket in ASCII or binary format. This information can be further processed by a profiler front–end tool.
+HAT - Heap Analysis Tool
+•The Heap Analysis Tool (HAT) helps debug unintentional object retention. This term is used to describe an object that is no longer needed but is kept alive due to references through some path from a live object.
+•HAT provides a convenient means to browse the object topology in a heap snapshot that is generated using HPROF.
+FAQ about Garbage collector
+
+--------------------------------------------------------------------------------
+
+Can a Java application run out of memory?
+Yes, The garbage collection system attempts to remove objects from memory when they are not used. But if you maintain too many live objects, the system can run out of memory. Garbage collection cannot ensure that there is enough memory, only that the memory that is available will be managed as efficiently as possible.
+
+
+--------------------------------------------------------------------------------
+ 
+ 
